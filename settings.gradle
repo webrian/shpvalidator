@@ -1,2 +1,2 @@
-rootProject.name = 'ilivalidator'
+rootProject.name = 'shpvalidator'
 include "demoplugin"

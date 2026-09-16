@@ -57,6 +57,8 @@ import ch.interlis.iox_j.utility.ReaderFactory;
 import ch.interlis.iox_j.validator.InterlisFunction;
 import ch.interlis.iox_j.validator.ValidationConfig;
 import ch.interlis.models.DatasetIdx16.DataFile;
+import ch.interlis.ioxwkf.shp.ShapeReader;
+
 
 /** High-level API of the INTERLIS validator.
  * For a usage example of this class, see the implementation of class {@link Main}.
@@ -202,7 +204,7 @@ public class Validator {
 			td=null;
 			
             ch.interlis.ilirepository.IliManager repoManager=createRepositoryManager(new File(dataFiles[0]).getAbsoluteFile().getParentFile().getAbsolutePath(),appHome,settings);
-			
+
 			// get local copy of metaConfigFile
             if(metaConfigFilename!=null) {
                 List<String> metaConfigFiles=new ArrayList<String>();

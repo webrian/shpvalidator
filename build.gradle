@@ -3,8 +3,8 @@ allprojects {
 	apply plugin: "java"
 	apply plugin: "maven"
 	
-	sourceCompatibility = JavaVersion.VERSION_1_6 
-	targetCompatibility = JavaVersion.VERSION_1_6
+	sourceCompatibility = JavaVersion.VERSION_1_8
+	targetCompatibility = JavaVersion.VERSION_1_8
 	compileJava.options.encoding = 'US-ASCII'
 }
 
@@ -22,12 +22,17 @@ configurations {
 //}
 
 dependencies {
-    implementation group: 'ch.ehi', name: 'ehibasics', version: '1.4.1'
+    compile(group: 'org.geotools', name: 'gt-shapefile', version: '28.5') {
+        exclude group: 'com.vividsolutions', module: 'jts' // use version that iox-ili depends on
+    }
+    compile group: 'ch.ehi', name: 'ehibasics', version: '1.4.1'
     implementation group: 'ch.interlis', name: 'iox-api', version: '1.0.4'
     implementation group: 'ch.interlis', name: 'iox-ili', version: '1.24.4'
+    implementation group: 'ch.interlis', name: 'iox-wkf', version: '2.0.0'
     implementation group: 'ch.interlis', name: 'ili2c-tool', version: "5.6.8"
     implementation group: 'ch.interlis', name: 'ili2c-core', version: "5.6.8"
     implementation "antlr:antlr:2.7.7" 
+    runtime group: 'org.geotools', name: 'gt-epsg-hsql', version: '28.5'
     testImplementation group: 'junit', name: 'junit', version: '4.12'
     deployerJars "org.apache.maven.wagon:wagon-ftp:3.3.3"
     deployerJars "org.apache.maven.wagon:wagon-ssh:3.3.3"
@@ -40,11 +45,17 @@ dependencies {
 }
 
 repositories {
-	mavenLocal()
-	mavenCentral()
+    mavenLocal()
+    maven {
+        url "https://repo.osgeo.org/repository/geotools-releases/"
+    }
+    maven {
+        url "http://maven.geo-solutions.it"
+    }
     maven {
         url "http://jars.interlis.ch"
     }
+    mavenCentral()
 }
 
 Properties properties = new Properties()
