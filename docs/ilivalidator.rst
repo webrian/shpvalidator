@@ -17,7 +17,7 @@ Es bestehen u.a. folgende Konfigurationsmöglichkeiten:
 - zusätzliche INTERLIS-Funktionen zu implementieren
 - Modellnamen zu setzen
 
-Zusätzlich umfasst der IliValidator Hilfsfunktionen betrf. 
+Zusätzlich umfasst der ilivalidator Hilfsfunktionen betrf. 
 Daten (z.B. Kataloge) in einem Repository.
 
 Log-Meldungen
@@ -525,7 +525,7 @@ In der Meta-Konfigurationsdatei werden die folgenden Parameter unterstützt (hie
 +---------------------------------+----------------------------------------------------+-----------------------------------------------------------------------------------+
 |                                 | .. code::                                          |                                                                                   |
 |                                 |                                                    |                                                                                   |
-| refmapping                      |   [ch.ehi.ilivalidator]                            | Entspricht dem Kommandozeilenargument ``--refmapping``                                |
+| refmapping                      |   [ch.ehi.ilivalidator]                            | Entspricht dem Kommandozeilenargument ``--refmapping``                            |
 |                                 |   refmapping=ilidata:DatesetId                     |                                                                                   |  
 |                                 |                                                    |                                                                                   |
 +---------------------------------+----------------------------------------------------+-----------------------------------------------------------------------------------+
@@ -777,25 +777,29 @@ erste Constraint einer Klasse heisst also ``Constraint1``, das Zweite ``Constrai
 INTERLIS-Laufzeitparameter
 --------------------------
 
-Der IliValidator definiert die folgenden INTERLIS-Laufzeitparameter.
+Der ilivalidator definiert die folgenden INTERLIS-Laufzeitparameter.
 
-+---------------------------------+--------------------------------------------------------------+
-| Parameter                       | Beschreibung                                                 |
-+=================================+==============================================================+
-| MinimalRuntimeSystem01.RuntimeSystemName     | Der Umfang der aktuellen Validierung,           |
-| MinimalRuntimeSystem01.RuntimeSystemVersion  | Der Umfang der aktuellen Validierung,           |
-| MinimalRuntimeSystem01.OperatingSystemName   | Der Umfang der aktuellen Validierung,           |
-| MinimalRuntimeSystem01.HostName              | Der Umfang der aktuellen Validierung,           |
-| MinimalRuntimeSystem01.CurrentUserName       | Der Umfang der aktuellen Validierung,           |
-| MinimalRuntimeSystem01.CurrentDateTime       | Der Umfang der aktuellen Validierung,           |
-| MinimalRuntimeSystem01.CurrentTransferfile   | Der Umfang der aktuellen Validierung,           |
-+---------------------------------+--------------------------------------------------------------+
-| IliVRuntime.Scope               | Der Umfang der aktuellen Validierung,                        |
-|                                 | z.B. die Gemeinde-Id oder das Kantonskürzel.                 |
-|                                 | Muss mittels dem Parameter ``--scope`` gesetzt               |
-|                                 | werden, bleibt sonst undefiniert.                            |
-|                                 |                                                              |
-+---------------------------------+--------------------------------------------------------------+
++----------------------------------------------+------------------------------------------------------------------+
+| Parameter                                    | Beschreibung                                                     |
++==============================================+==================================================================+
+| MinimalRuntimeSystem01.RuntimeSystemName     | Konstant ``ilivalidator``                                        |
++----------------------------------------------+------------------------------------------------------------------+
+| MinimalRuntimeSystem01.RuntimeSystemVersion  | Die Progamm-Version des ilivalidators, z.B. ``1.10.11``          |
++----------------------------------------------+------------------------------------------------------------------+
+| MinimalRuntimeSystem01.OperatingSystemName   | Das aktuelle Betriebssystem (``System.getProperty("os.name")``)  |
++----------------------------------------------+------------------------------------------------------------------+
+| MinimalRuntimeSystem01.CurrentUserName       | Der aktuelle Benutzer (``System.getProperty("user.name")``)      |
++----------------------------------------------+------------------------------------------------------------------+
+| MinimalRuntimeSystem01.CurrentDateTime       | Der Zeitpunkt des aktuellen Validierungslaufs.                   |
++----------------------------------------------+------------------------------------------------------------------+
+| MinimalRuntimeSystem01.CurrentTransferfile   | Der Name inkl. Pfad der aktuell validierten Transferdatei.       |
++----------------------------------------------+------------------------------------------------------------------+
+| IliVRuntime_V1_0.Scope                       | Der Umfang der aktuellen Validierung,                            |
+|                                              | z.B. die Gemeinde-Id oder das Kantonskürzel.                     |
+|                                              | Muss mittels dem Parameter ``--scope`` gesetzt                   |
+|                                              | werden, bleibt sonst undefiniert.                                |
+|                                              |                                                                  |
++----------------------------------------------+------------------------------------------------------------------+
 
 Modell IliVErrors
 -----------------
@@ -803,16 +807,16 @@ Modell IliVErrors
 
 .. _IliVErrors.ili: IliVErrors.ili
 
-Modell IliVRuntime
-------------------
-`IliVRuntime.ili`_
+Modell IliVRuntime_V1_0
+-----------------------
+`IliVRuntime_V1_0.ili`_
 
 Dieses Datenmodell definiert spezifische Laufzeitdaten des Validators, die über 
 das allegemeine Modell ``MinimalRuntimeSystem01`` hinausgehen.
 
-Modell IliVRefData
-------------------
-`IliVRefData.ili`_
+Modell IliVRefData_V1_0
+-----------------------
+`IliVRefData_V1_0.ili`_
 
 Mit Daten gemäss diesem Modell und der Definition des Validierungsumfangs 
 (``--scope``) kann der Validator selber die benötigten 
@@ -835,7 +839,7 @@ Validierungsumfang des aktuellen Validierungslaufs.
 Für die Angabe ``refdata`` sind alle URLs möglich, die auch für 
 die Angabe der zu validierenden Transferdatei möglich sind.
 
-.. _IliVRefData.ili: IliVRefData.ili
+.. _IliVRefData_V1_0.ili: IliVRefData_V1_0.ili
 
 
 Umfang der Transferdatei
