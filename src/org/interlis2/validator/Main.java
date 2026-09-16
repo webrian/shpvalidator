@@ -7,17 +7,20 @@ import java.lang.reflect.Method;
 import ch.ehi.basics.logging.EhiLogger;
 import ch.ehi.basics.settings.Settings;
 import ch.interlis.iox_j.validator.ValidationConfig;
+import ch.interlis.ioxwkf.shp.ShapeReader;
+import ch.interlis.iox_j.utility.ReaderFactory;
+import java.util.List;
 
-/** Main program and commandline interface of ilivalidator.
+/** Main program and commandline interface of shpvalidator.
  */
 public class Main {
 	
 	/** name of application as shown to user.
 	 */
-	public static final String APP_NAME="ilivalidator";
+	public static final String APP_NAME="shpvalidator";
 	/** name of jar file.
 	 */
-	public static final String APP_JAR="ilivalidator.jar";
+	public static final String APP_JAR="shpvalidator.jar";
 	/** version of application.
 	 */
 	private static String version=null;
@@ -55,16 +58,16 @@ public class Main {
 		    }
 		}
 		// arguments on export
-		String[] xtfFile=null;
+		String[] shpFile=null;
 		java.util.List<String> xtfRefFile=new java.util.ArrayList<String>();
         java.util.List<String> xtfRefMappingFile=new java.util.ArrayList<String>();
 		String httpProxyHost = null;
 		String httpProxyPort = null;
 		if(args.length==0){
-			xtfFile=new String[0];
+			shpFile=new String[0];
 			readSettings(settings);
-            // MainFrame.main(xtfFile,settings);
-			runGui(mainFrameMain, xtfFile, settings);     
+            // MainFrame.main(shpFile,settings);
+			runGui(mainFrameMain, shpFile, settings);
 			return;
 		}
 		int argi=0;
@@ -237,20 +240,20 @@ public class Main {
 		int dataFileCount=args.length-argi;
 		if(doGui){
 			if(dataFileCount>0) {
-				xtfFile = getDataFiles(args, argi, dataFileCount);
+				shpFile = getDataFiles(args, argi, dataFileCount);
 			}
 			//MainFrame.main(xtfFile,settings);
-            runGui(mainFrameMain, xtfFile, settings);                     
+            runGui(mainFrameMain, shpFile, settings);
             return;
 		}else{
-            xtfFile = getDataFiles(args, argi, dataFileCount);
+            shpFile = getDataFiles(args, argi, dataFileCount);
             boolean ok=false;
 		    if(function==FC_VALIDATE) {
                 if (dataFileCount == 0) {
                     EhiLogger.logError(APP_NAME+": wrong number of arguments");
                     System.exit(2);                     
                 }
-                ok = Validator.runValidation(xtfFile,settings);
+                ok = new ShpValidator().validate(shpFile,settings);
 		    }else if(function==FC_CREATE_ILIDATA_XML) {
                 if(dataFileCount!=0) {
                     EhiLogger.logError(APP_NAME+": wrong number of arguments");
@@ -262,7 +265,7 @@ public class Main {
                     EhiLogger.logError(APP_NAME+": wrong number of arguments");
                     System.exit(2);                     
                 }
-                ok = UpdateIliDataTool.update(new File(xtfFile[0]),settings);
+                ok = UpdateIliDataTool.update(new File(shpFile[0]),settings);
             }else if(function==FC_CHECK_REPO_DATA) {
                 if (dataFileCount != 0) {
                     EhiLogger.logError(APP_NAME+": wrong number of arguments");
@@ -281,10 +284,10 @@ public class Main {
         buf.append(val);
         return buf.toString();
     }
-    private static void runGui(Method mainFrameMain, String[] xtfFile, Settings settings) {
+    private static void runGui(Method mainFrameMain, String[] shpFile, Settings settings) {
         if(mainFrameMain!=null) {
             try {
-                mainFrameMain.invoke(null, xtfFile,settings);
+                mainFrameMain.invoke(null, shpFile,settings);
                 return;                 
             } catch (IllegalArgumentException ex) {
                 EhiLogger.logError("failed to open GUI",ex);
@@ -299,15 +302,15 @@ public class Main {
         System.exit(2);
     }
     private static String[] getDataFiles(String[] args, int argi, int dataFileCount) {
-		String[] xtfFile;
-		xtfFile=new String[dataFileCount];
+		String[] shpFile;
+		shpFile=new String[dataFileCount];
 		int fileCount=0;
 		while(argi<args.length){
-			xtfFile[fileCount]=args[argi];
+			shpFile[fileCount]=args[argi];
 			fileCount+=1;
 			argi++;
 		}
-		return xtfFile;
+		return shpFile;
 	}
 	/** Name of file with program settings. Only used by GUI, not used by commandline version.
 	 */
@@ -352,7 +355,7 @@ public class Main {
 	protected static void printDescription ()
 	{
 	  System.err.println("DESCRIPTION");
-	  System.err.println("  Validates an INTERLIS transfer file.");
+	  System.err.println("  Validates an ESRI Shapefile against an INTERLIS model.");
 	}
 
 	/** Prints program usage.
@@ -360,7 +363,7 @@ public class Main {
 	protected static void printUsage()
 	{
 	  System.err.println ("USAGE");
-	  System.err.println("  java -jar "+APP_JAR+" [Options] in.xtf");
+	  System.err.println("  java -jar "+APP_JAR+" [Options] in.shp");
 	}
 	/** Gets version of program.
 	 * @return version e.g. "1.0.0"

@@ -1,0 +1,17 @@
+INTERLIS 2.3;
+
+MODEL SimpleShpValidatorModel (de)
+AT "https://models.alpgis.ch/"
+VERSION "2025-10-23"  =
+  IMPORTS GeometryCHLV95_V1;
+  
+  TOPIC ShpValidatorTopic =
+    CLASS ShpValidatorClass =
+      id : MANDATORY 0 .. 10000000;
+      zustand : TEXT*80;
+      the_geom : MANDATORY GeometryCHLV95_V1.Line;
+    END ShpValidatorClass;
+  END ShpValidatorTopic;
+
+END SimpleShpValidatorModel.
+
