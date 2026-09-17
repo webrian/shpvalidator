@@ -1,0 +1,45 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v5
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Run tests with Gradle
+        run: ./gradlew test
+
+      - name: Build with Gradle
+        run: ./gradlew bindist
+
+      - name: List distribution directory
+        run: ls -R dist/
+
+      - name: Get project version
+        id: get_version
+        run: |
+          version=$(./gradlew properties -q | grep "^version:" | cut -d' ' -f2)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: shpvalidator-${{ steps.get_version.outputs.version }}
+          path: dist/shpvalidator-${{ steps.get_version.outputs.version }}.zip
+          if-no-files-found: error
