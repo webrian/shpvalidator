@@ -8,7 +8,11 @@ VERSION "2025-10-23"  =
   TOPIC ShpValidatorTopic =
     CLASS ShpValidatorClass =
       id : MANDATORY 0 .. 10000000;
-      zustand : TEXT*80;
+      name: TEXT*80;
+      zustand : MANDATORY (
+        in_Betrieb,
+        ausser_Betrieb
+      );
       the_geom : MANDATORY GeometryCHLV95_V1.Line;
     END ShpValidatorClass;
   END ShpValidatorTopic;

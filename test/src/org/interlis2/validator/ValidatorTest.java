@@ -25,7 +25,15 @@ public class ValidatorTest {
 		boolean ret=Validator.runValidation("test/data/Beispiel1a.itf", null);
 		assertTrue(ret);
 	}
-	
+
+	@Test
+	public void shpOk() {
+		Settings settings=new Settings();
+		settings.setValue(Validator.SETTING_MODELNAMES, "SimpleShpValidatorModel");
+		boolean ret=new ShpValidator().validate(new String[] {"test/data/SimpleShpValidatorData1.shp"}, settings);
+		assertTrue(ret);
+	}
+
 	@Test
 	public void itfReader2Ok() {
 		boolean ret=Validator.runValidation("test/data/ItfReader2/SurfaceBasic.itf", null);
@@ -56,6 +64,20 @@ public class ValidatorTest {
 	@Test
 	public void itfFail() {
 		boolean ret=Validator.runValidation("test/data/Beispiel1b.itf", null);
+		assertFalse(ret);
+	}
+	@Test
+	public void shpFailInvalidEnum() {
+		Settings settings=new Settings();
+		settings.setValue(Validator.SETTING_MODELNAMES, "SimpleShpValidatorModel");
+		boolean ret=new ShpValidator().validate(new String[] {"test/data/SimpleShpValidatorData2.shp"}, settings);
+		assertFalse(ret);
+	}
+	@Test
+	public void shpFailMissingMandatoryField() {
+		Settings settings=new Settings();
+		settings.setValue(Validator.SETTING_MODELNAMES, "SimpleShpValidatorModel");
+		boolean ret=new ShpValidator().validate(new String[] {"test/data/SimpleShpValidatorData3.shp"}, settings);
 		assertFalse(ret);
 	}
 	@Test
