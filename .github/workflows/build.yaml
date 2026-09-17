@@ -38,7 +38,7 @@ jobs:
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v6
         with:
           name: shpvalidator-${{ steps.get_version.outputs.version }}
           path: dist/shpvalidator-${{ steps.get_version.outputs.version }}.zip
